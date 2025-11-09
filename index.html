@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Advanced Database Midterm Adventure – COMP412</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .progress-container {
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 10px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        .progress-bar {
+            height: 30px;
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            border-radius: 15px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .motivation {
+            text-align: center;
+            color: white;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .world-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .world-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .world-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .world-card.world-1 { border-top: 5px solid #3b82f6; }
+        .world-card.world-2 { border-top: 5px solid #f97316; }
+        .world-card.world-3 { border-top: 5px solid #a855f7; }
+        .world-card.world-4 { border-top: 5px solid #ef4444; }
+
+        .world-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .world-section {
+            margin: 60px 0;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .world-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .world-header h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .world-1 .world-header h2 { color: #3b82f6; }
+        .world-2 .world-header h2 { color: #f97316; }
+        .world-3 .world-header h2 { color: #a855f7; }
+        .world-4 .world-header h2 { color: #ef4444; }
+
+        .world-intro {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .checklist {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .checklist-item {
+            padding: 10px;
+            margin: 5px 0;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .checklist-item:hover {
+            background: #e2e8f0;
+        }
+
+        .checklist-item.checked {
+            background: #d1fae5;
+            animation: checkPulse 0.3s ease;
+        }
+
+        .checklist-item::before {
+            content: '☐ ';
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .checklist-item.checked::before {
+            content: '✅ ';
+        }
+
+        @keyframes checkPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .level-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            transition: all 0.3s ease;
+        }
+
+        .level-card.mastered {
+            border-color: #10b981;
+            background: linear-gradient(to right, #f0fdf4, white);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .level-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .level-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+        .level-tag {
+            background: #e2e8f0;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .question-box {
+            background: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .question-box h4 {
+            margin-bottom: 10px;
+            color: #1e293b;
+        }
+
+        .try-yourself {
+            margin: 20px 0;
+        }
+
+        .try-yourself textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            resize: vertical;
+        }
+
+        .try-yourself textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .hint-section {
+            margin: 20px 0;
+        }
+
+        .hint-button {
+            background: #fbbf24;
+            color: #78350f;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .hint-button:hover {
+            background: #f59e0b;
+            transform: scale(1.05);
+        }
+
+        .hint-list {
+            margin-top: 15px;
+            list-style: none;
+        }
+
+        .hint-item {
+            background: #fef3c7;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border-left: 4px solid #fbbf24;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .solution-section {
+            margin: 20px 0;
+        }
+
+        .solution-toggle {
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+
+        .solution-toggle:hover {
+            background: #7c3aed;
+        }
+
+        .solution-content {
+            display: none;
+            margin-top: 15px;
+            padding: 20px;
+            background: #f5f3ff;
+            border-radius: 10px;
+            border-left: 4px solid #8b5cf6;
+        }
+
+        .solution-content.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 1000px;
+            }
+        }
+
+        .solution-step {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .solution-step strong {
+            color: #8b5cf6;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .final-answer {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .final-answer pre {
+            margin: 10px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .copy-button:hover {
+            background: #2563eb;
+        }
+
+        .master-button {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .master-button:hover {
+            background: #059669;
+            transform: scale(1.02);
+        }
+
+        .master-button.mastered {
+            background: #6b7280;
+            cursor: default;
+        }
+
+        .master-button.mastered:hover {
+            transform: none;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .world-section {
+                padding: 20px;
+            }
+
+            .level-card {
+                padding: 20px;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .world-card:nth-child(1) { animation: bounce 2s ease-in-out infinite; animation-delay: 0s; }
+        .world-card:nth-child(2) { animation: bounce 2s ease-in-out infinite; animation-delay: 0.2s; }
+        .world-card:nth-child(3) { animation: bounce 2s ease-in-out infinite; animation-delay: 0.4s; }
+        .world-card:nth-child(4) { animation: bounce 2s ease-in-out infinite; animation-delay: 0.6s; }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8); }
+        }
+
+        .progress-bar {
+            animation: glow 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Advanced Database Midterm Adventure – COMP412</h1>
+            <p class="subtitle">Connections • Roles • Tables & Arrays • Backup & Restore – turned into mini levels</p>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar" style="width: 0%;">
+                    <span id="progressText">0%</span>
+                </div>
+            </div>
+
+            <p class="motivation">Finish all levels = you mentally finish this exact midterm.</p>
+        </header>
+
+        <!-- World Navigation Cards -->
+        <div class="world-cards">
+            <div class="world-card world-1" onclick="scrollToWorld('world1')">
+                <h3>🌐 World 1</h3>
+                <p><strong>Connection Control Arena</strong></p>
+                <p>Manage database connections like a pro</p>
+            </div>
+            <div class="world-card world-2" onclick="scrollToWorld('world2')">
+                <h3>👥 World 2</h3>
+                <p><strong>Roles & Permissions City</strong></p>
+                <p>Master user management and security</p>
+            </div>
+            <div class="world-card world-3" onclick="scrollToWorld('world3')">
+                <h3>🔬 World 3</h3>
+                <p><strong>Sample DB Lab</strong></p>
+                <p>Build databases with advanced types</p>
+            </div>
+            <div class="world-card world-4" onclick="scrollToWorld('world4')">
+                <h3>💾 World 4</h3>
+                <p><strong>Backup & Restore Boss</strong></p>
+                <p>Protect your data with backups</p>
+            </div>
+        </div>
+
+        <!-- WORLD 1: Connection Control Arena -->
+        <div class="world-section world-1" id="world1">
+            <div class="world-header">
+                <h2>🌐 World 1 – Connection Control Arena</h2>
+                <p>Master the art of managing PostgreSQL database connections</p>
+            </div>
+
+            <div class="world-intro">
+                <h3>What You'll Learn</h3>
+                <p>In this world, you'll learn how to monitor and control database connections in PostgreSQL. This is crucial for database administration and troubleshooting.</p>
+
+                <h4 style="margin-top: 15px;">Skills Checklist:</h4>
+                <ul class="checklist" data-world="1">
+                    <li class="checklist-item" onclick="toggleCheck(this)">View active connections and their PIDs</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">Cancel running queries safely</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">Terminate connections when needed</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">Kill all connections for a specific role</li>
+                </ul>
+            </div>
+
+            <!-- Level 1.1 -->
+            <div class="level-card" data-level="1">
+                <div class="level-header">
+                    <h3 class="level-title">Level 1.1 – List Recent Connections & PIDs</h3>
+                    <span class="level-tag">Midterm – Section 1, Question 1</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>How can you retrieve a list of recent connections and process IDs (PIDs) in PostgreSQL?</p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the SQL query you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Identify the right tool</strong>
+                            <p>PostgreSQL provides a system view called <code>pg_stat_activity</code> that shows information about current database connections and activities.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Select relevant columns</strong>
+                            <p>The most important columns are: <code>pid</code> (process ID), <code>usename</code> (username), <code>datname</code> (database name), and <code>state</code> (connection state).</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Write the query</strong>
+                            <p>Use a SELECT statement to retrieve these columns from pg_stat_activity.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Why this works</strong>
+                            <p>This query gives you a real-time snapshot of all active connections, which is essential for monitoring and troubleshooting database performance and connection issues.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>SELECT pid, usename, datname, state
+FROM pg_stat_activity;</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 1)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 1.2 -->
+            <div class="level-card" data-level="2">
+                <div class="level-header">
+                    <h3 class="level-title">Level 1.2 – Cancel and Terminate Connections</h3>
+                    <span class="level-tag">Midterm – Section 1, Question 2</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Assume that you need to terminate a specific connection to the PostgreSQL database. How can you cancel active queries on a connection with a given PID, and how can you terminate the connection itself?</p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the commands you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Understand the difference</strong>
+                            <p><code>pg_cancel_backend()</code> attempts to cancel the current query gracefully, while <code>pg_terminate_backend()</code> forcefully terminates the entire connection.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Cancel a query (gentle approach)</strong>
+                            <p>Use <code>pg_cancel_backend(pid)</code> to stop a running query without disconnecting the client. Replace 'pid' with the actual process ID.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Terminate a connection (forceful approach)</strong>
+                            <p>Use <code>pg_terminate_backend(pid)</code> to immediately close the connection. This should be used when canceling doesn't work.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Why this is correct</strong>
+                            <p>These functions give you control over individual connections. Always try canceling first (less disruptive), then terminate if necessary. Both require the PID from pg_stat_activity.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>-- To cancel a query (gentle):
+SELECT pg_cancel_backend(12345);  -- Replace 12345 with actual PID
+
+-- To terminate a connection (forceful):
+SELECT pg_terminate_backend(12345);  -- Replace 12345 with actual PID</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 2)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 1.3 -->
+            <div class="level-card" data-level="3">
+                <div class="level-header">
+                    <h3 class="level-title">Level 1.3 – Kill All Connections for a Role</h3>
+                    <span class="level-tag">Midterm – Section 1, Question 3</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>How can you kill all connections belonging to a specific role in PostgreSQL?</p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the SQL query you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Identify connections by role</strong>
+                            <p>Query <code>pg_stat_activity</code> to find all PIDs where <code>usename</code> matches the target role name.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Use a subquery approach</strong>
+                            <p>Combine <code>pg_terminate_backend()</code> with a SELECT statement that filters by username.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Write the complete query</strong>
+                            <p>Use SELECT with pg_terminate_backend() to terminate all matching connections. The WHERE clause filters by role name and excludes your own connection.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Why this is correct</strong>
+                            <p>This approach automatically handles multiple connections for the same role. The <code>pid &lt;&gt; pg_backend_pid()</code> condition prevents you from accidentally terminating your own connection.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>SELECT pg_terminate_backend(pid)
+FROM pg_stat_activity
+WHERE usename = 'role_name'  -- Replace with actual role name
+  AND pid &lt;&gt; pg_backend_pid();  -- Don't kill your own connection</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 3)">✅ Mark this level as mastered</button>
+            </div>
+        </div>
+
+        <!-- WORLD 2: Roles & Permissions City -->
+        <div class="world-section world-2" id="world2">
+            <div class="world-header">
+                <h2>👥 World 2 – Roles & Permissions City</h2>
+                <p>Master user creation and permission management in PostgreSQL</p>
+            </div>
+
+            <div class="world-intro">
+                <h3>Scenario</h3>
+                <p>You are setting up a new PostgreSQL database for a team of developers. The database contains sensitive data and you must ensure that access is restricted to authorized users only.</p>
+
+                <h4 style="margin-top: 15px;">Skills Checklist:</h4>
+                <ul class="checklist" data-world="2">
+                    <li class="checklist-item" onclick="toggleCheck(this)">Create users with LOGIN and password</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">Set expiration dates with VALID UNTIL</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">Grant SELECT, INSERT, UPDATE permissions</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">Create roles and assign members</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">Set up role inheritance</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">Test user permissions</li>
+                </ul>
+            </div>
+
+            <!-- Level 2.1 -->
+            <div class="level-card" data-level="4">
+                <div class="level-header">
+                    <h3 class="level-title">Level 2.1 – Create dev_user with Permissions</h3>
+                    <span class="level-tag">Midterm – Section 2, Question 1</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Create a new user in the database named "dev_user" with a password of your choice, but ensure that the user is valid only until a specific date. Grant this user permission to read and write to a specific table named "employee_data".</p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the SQL commands you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Create the user with LOGIN</strong>
+                            <p>Use <code>CREATE ROLE</code> with <code>LOGIN</code> option to create a user that can connect to the database.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Set password and expiration</strong>
+                            <p>Add <code>PASSWORD</code> clause for authentication and <code>VALID UNTIL</code> to set an expiration date.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Grant read permissions</strong>
+                            <p>Use <code>GRANT SELECT</code> to allow reading data from the employee_data table.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Grant write permissions</strong>
+                            <p>Use <code>GRANT INSERT, UPDATE</code> to allow writing and modifying data.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 5: Why this is correct</strong>
+                            <p>This creates a temporary user account with limited permissions. The VALID UNTIL clause ensures the account automatically expires, enhancing security. The specific table permissions follow the principle of least privilege.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>-- Create user with password and expiration
+CREATE ROLE dev_user WITH LOGIN
+PASSWORD 'secure_password123'
+VALID UNTIL '2024-12-31';
+
+-- Grant read and write permissions
+GRANT SELECT, INSERT, UPDATE ON employee_data TO dev_user;</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 4)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 2.2 -->
+            <div class="level-card" data-level="5">
+                <div class="level-header">
+                    <h3 class="level-title">Level 2.2 – Create dev_team Role with Inheritance</h3>
+                    <span class="level-tag">Midterm – Section 2, Question 2</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Create a new role in the database named "dev_team" and assign the "dev_user" to this role. Grant the "dev_team" role permission to access all tables in the database, but ensure that this permission is inherited by all members of the "dev_team" role.</p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the SQL commands you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Create the role (not a login user)</strong>
+                            <p>Use <code>CREATE ROLE dev_team</code> without LOGIN option. This creates a group role.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Grant permissions to all tables</strong>
+                            <p>Use <code>GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public</code> to give access to all tables in the public schema.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Add dev_user to dev_team</strong>
+                            <p>Use <code>GRANT dev_team TO dev_user</code> to make dev_user a member of the dev_team role.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Ensure inheritance is enabled</strong>
+                            <p>By default, PostgreSQL roles inherit permissions. You can explicitly set this with <code>ALTER ROLE dev_user INHERIT</code>.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 5: Why this is correct</strong>
+                            <p>Group roles allow centralized permission management. When you add users to dev_team, they automatically inherit all permissions. This makes it easy to manage permissions for multiple developers.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>-- Create the dev_team role
+CREATE ROLE dev_team;
+
+-- Grant access to all tables
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO dev_team;
+
+-- Add dev_user to dev_team
+GRANT dev_team TO dev_user;
+
+-- Ensure inheritance (usually default, but explicit is good)
+ALTER ROLE dev_user INHERIT;</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 5)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 2.3 -->
+            <div class="level-card" data-level="6">
+                <div class="level-header">
+                    <h3 class="level-title">Level 2.3 – Add New Developer and Test Access</h3>
+                    <span class="level-tag">Midterm – Section 2, Question 3</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Finally, assume that a new developer has joined the team and needs access to the database. Create a new user for this developer with a password of your choice, and add this user to the "dev_team" role. Test the user's access to the "employee_data".</p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the SQL commands you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Create the new developer user</strong>
+                            <p>Use <code>CREATE ROLE new_developer WITH LOGIN PASSWORD 'password'</code> to create a user that can log in.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Add to dev_team</strong>
+                            <p>Use <code>GRANT dev_team TO new_developer</code> to add them to the group.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Test access with SELECT</strong>
+                            <p>Connect as the new user and run <code>SELECT * FROM employee_data</code> to verify read access.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Test write access</strong>
+                            <p>Try an INSERT or UPDATE statement to confirm write permissions work.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 5: Why this is correct</strong>
+                            <p>This demonstrates the power of role-based access control. The new developer automatically inherits all dev_team permissions without needing individual grants. Testing confirms the inheritance works correctly.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>-- Create new developer user
+CREATE ROLE new_developer WITH LOGIN PASSWORD 'dev_pass456';
+
+-- Add to dev_team role
+GRANT dev_team TO new_developer;
+
+-- Test access (connect as new_developer and run):
+SELECT * FROM employee_data;
+
+-- Test write access:
+INSERT INTO employee_data VALUES (...);  -- with appropriate values</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 6)">✅ Mark this level as mastered</button>
+            </div>
+        </div>
+
+        <!-- WORLD 3: Sample DB Lab -->
+        <div class="world-section world-3" id="world3">
+            <div class="world-header">
+                <h2>🔬 World 3 – Sample DB Lab</h2>
+                <p>Build and manipulate databases with advanced data types</p>
+            </div>
+
+            <div class="world-intro">
+                <h3>Mission</h3>
+                <p>Create a complete database from scratch with various data types, import data, use string functions, add columns, create sequences, and work with PostgreSQL arrays.</p>
+
+                <h4 style="margin-top: 15px;">Skills Checklist:</h4>
+                <ul class="checklist" data-world="3">
+                    <li class="checklist-item" onclick="toggleCheck(this)">CREATE DATABASE and tables</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">Use SERIAL, VARCHAR, NUMERIC, TEXT types</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">Import CSV data with COPY</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">String functions: LPAD, TRIM</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">Add DATE and TIMESTAMPTZ columns</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">CREATE SEQUENCE with custom start/increment</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">Work with integer arrays</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">Query arrays with @> operator</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">Use array_append function</li>
+                </ul>
+            </div>
+
+            <!-- Level 3.1 -->
+            <div class="level-card" data-level="7">
+                <div class="level-header">
+                    <h3 class="level-title">Level 3.1 – Create Database and Table</h3>
+                    <span class="level-tag">Midterm – Section 3, Question 1</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Create a database called "sample_db" with a single table called "sample_table". The table should have the following columns:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li><strong>id:</strong> a serial column which automatically increments with each row added</li>
+                        <li><strong>name:</strong> a character varying column with a maximum length of 50 characters</li>
+                        <li><strong>age:</strong> a numeric column with a precision of 4 and a scale of 2</li>
+                        <li><strong>description:</strong> a text column</li>
+                    </ul>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the SQL commands you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Create the database</strong>
+                            <p>Use <code>CREATE DATABASE sample_db;</code> to create a new database.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Connect to the database</strong>
+                            <p>Use <code>\c sample_db</code> in psql to connect to the new database.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Create the table with proper types</strong>
+                            <p>Use SERIAL for auto-incrementing id, VARCHAR(50) for name, NUMERIC(4,2) for age, and TEXT for description.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Why this is correct</strong>
+                            <p>SERIAL automatically creates a sequence and sets the default value. NUMERIC(4,2) allows numbers like 99.99. VARCHAR limits length, while TEXT has no limit. These types match the requirements exactly.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>-- Create the database
+CREATE DATABASE sample_db;
+
+-- Connect to it (in psql)
+\c sample_db
+
+-- Create the table
+CREATE TABLE sample_table (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50),
+    age NUMERIC(4, 2),
+    description TEXT
+);</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 7)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 3.2 -->
+            <div class="level-card" data-level="8">
+                <div class="level-header">
+                    <h3 class="level-title">Level 3.2 – Import CSV Data</h3>
+                    <span class="level-tag">Midterm – Section 3, Question 2</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Populate the "sample_table" with the following data from a CSV file called "sample_data.csv":</p>
+                    <pre style="background: #f1f5f9; padding: 10px; border-radius: 5px; margin-top: 10px;">name,age,description
+John Smith,25,"Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+Jane Doe,33,"Nullam imperdiet massa ac elementum laoreet."
+Bob Johnson,45,"Pellentesque euismod quam non mi rutrum, non malesuada magna malesuada."</pre>
+                    <p style="margin-top: 10px;"><em>Note: You can assume that the CSV file is located in the same directory as the SQL file and can be loaded using the COPY command.</em></p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the command you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Identify the right command</strong>
+                            <p>PostgreSQL's <code>COPY</code> command is designed for bulk importing data from files.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Specify the format</strong>
+                            <p>Use <code>WITH (FORMAT csv, HEADER true)</code> to indicate CSV format with a header row.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Specify columns to import</strong>
+                            <p>List only the columns in the CSV (name, age, description), not the id which auto-generates.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Why this is correct</strong>
+                            <p>COPY is the most efficient way to import bulk data. HEADER true skips the first line. By not including id in the column list, PostgreSQL uses the SERIAL default to auto-generate IDs.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>COPY sample_table (name, age, description)
+FROM '/path/to/sample_data.csv'
+WITH (FORMAT csv, HEADER true);</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 8)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 3.3 -->
+            <div class="level-card" data-level="9">
+                <div class="level-header">
+                    <h3 class="level-title">Level 3.3 – Pad Name Column with LPAD</h3>
+                    <span class="level-tag">Midterm – Section 3, Question 3</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Show all data and use string functions to pad the "name" column with spaces on the left so that all values are exactly 20 characters long.</p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the SQL query you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Identify the string function</strong>
+                            <p>PostgreSQL provides <code>LPAD()</code> for left-padding strings.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Understand LPAD syntax</strong>
+                            <p><code>LPAD(string, length, fill)</code> - pads string on the left to reach length using fill character.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Write the query</strong>
+                            <p>Use <code>LPAD(name, 20, ' ')</code> to pad with spaces to 20 characters.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Why this is correct</strong>
+                            <p>LPAD ensures all names are exactly 20 characters by adding spaces on the left. This is useful for fixed-width formatting. The third parameter ' ' specifies spaces as the padding character.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>SELECT id, LPAD(name, 20, ' ') AS name, age, description
+FROM sample_table;</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 9)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 3.4 -->
+            <div class="level-card" data-level="10">
+                <div class="level-header">
+                    <h3 class="level-title">Level 3.4 – Trim Whitespace with TRIM</h3>
+                    <span class="level-tag">Midterm – Section 3, Question 4</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Show all data and use string functions to trim leading and trailing whitespace from the "description" column.</p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the SQL query you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Identify the string function</strong>
+                            <p>PostgreSQL provides <code>TRIM()</code> for removing whitespace.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Understand TRIM behavior</strong>
+                            <p><code>TRIM()</code> by default removes spaces from both the beginning and end of a string.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Apply to description column</strong>
+                            <p>Use <code>TRIM(description)</code> in the SELECT statement.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Why this is correct</strong>
+                            <p>TRIM cleans up the data by removing unwanted whitespace that may have been introduced during data entry or import. This is important for data quality and consistency.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>SELECT id, name, age, TRIM(description) AS description
+FROM sample_table;</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 10)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 3.5 -->
+            <div class="level-card" data-level="11">
+                <div class="level-header">
+                    <h3 class="level-title">Level 3.5 – Add Birthdate Column</h3>
+                    <span class="level-tag">Midterm – Section 3, Question 5</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Add a new column called "birthdate" of type "date".</p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the SQL command you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Use ALTER TABLE</strong>
+                            <p><code>ALTER TABLE</code> is the command for modifying existing table structure.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Use ADD COLUMN</strong>
+                            <p>The <code>ADD COLUMN</code> clause adds a new column to the table.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Specify the DATE type</strong>
+                            <p>PostgreSQL's <code>DATE</code> type stores dates without time information.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Why this is correct</strong>
+                            <p>This command adds the column to all existing rows with NULL values. The DATE type is appropriate for storing birth dates as we don't need time information.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>ALTER TABLE sample_table
+ADD COLUMN birthdate DATE;</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 11)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 3.6 -->
+            <div class="level-card" data-level="12">
+                <div class="level-header">
+                    <h3 class="level-title">Level 3.6 – Add Last Login Column</h3>
+                    <span class="level-tag">Midterm – Section 3, Question 6</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Add a new column called "last_login" of type "timestamp with time zone".</p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the SQL command you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Use ALTER TABLE ADD COLUMN</strong>
+                            <p>Same approach as adding birthdate, but with a different type.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Choose the right timestamp type</strong>
+                            <p><code>TIMESTAMP WITH TIME ZONE</code> (or <code>TIMESTAMPTZ</code>) stores both date/time and timezone information.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Write the command</strong>
+                            <p>Combine ALTER TABLE with the TIMESTAMPTZ type.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Why this is correct</strong>
+                            <p>TIMESTAMPTZ is best practice for storing timestamps because it handles timezone conversions automatically. This is important for applications with users in different time zones.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>ALTER TABLE sample_table
+ADD COLUMN last_login TIMESTAMP WITH TIME ZONE;
+
+-- Alternative shorter syntax:
+ALTER TABLE sample_table
+ADD COLUMN last_login TIMESTAMPTZ;</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 12)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 3.7 -->
+            <div class="level-card" data-level="13">
+                <div class="level-header">
+                    <h3 class="level-title">Level 3.7 – Create Custom Sequence</h3>
+                    <span class="level-tag">Midterm – Section 3, Question 7</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Create a sequence called "sample_sequence" that starts at 100 and increments by 10.</p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the SQL command you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Use CREATE SEQUENCE</strong>
+                            <p>The <code>CREATE SEQUENCE</code> command creates a new sequence generator.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Set START value</strong>
+                            <p>Use <code>START WITH 100</code> to begin the sequence at 100.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Set INCREMENT value</strong>
+                            <p>Use <code>INCREMENT BY 10</code> to increase by 10 each time.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Why this is correct</strong>
+                            <p>Sequences generate unique numbers automatically. This is useful for custom numbering schemes. To get the next value, you'd use <code>nextval('sample_sequence')</code>.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>CREATE SEQUENCE sample_sequence
+START WITH 100
+INCREMENT BY 10;</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 13)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 3.8 -->
+            <div class="level-card" data-level="14">
+                <div class="level-header">
+                    <h3 class="level-title">Level 3.8 – Add Integer Array Column</h3>
+                    <span class="level-tag">Midterm – Section 3, Question 8</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Create an array column called "interests" that stores a list of integers for each person in the "sample_table".</p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the SQL command you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Use ALTER TABLE ADD COLUMN</strong>
+                            <p>Same pattern as before for adding a column.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Specify array type</strong>
+                            <p>Use <code>INTEGER[]</code> to declare an array of integers. The <code>[]</code> indicates array type.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Complete the command</strong>
+                            <p>Combine the table name, column name, and array type.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Why this is correct</strong>
+                            <p>PostgreSQL has native array support, which is powerful for storing multiple values in a single column. This is useful for tags, categories, or in this case, interests.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>ALTER TABLE sample_table
+ADD COLUMN interests INTEGER[];</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 14)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 3.9 -->
+            <div class="level-card" data-level="15">
+                <div class="level-header">
+                    <h3 class="level-title">Level 3.9 – Update Arrays for Each Person</h3>
+                    <span class="level-tag">Midterm – Section 3, Question 9</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Update the "interests" column for:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>John Smith by '{1,3,5}'</li>
+                        <li>Jane Doe by '{2,4}'</li>
+                        <li>Bob Johnson by '{1,2,3,4,5}'</li>
+                    </ul>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the SQL commands you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Use UPDATE statements</strong>
+                            <p>Use separate UPDATE statements for each person.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Array literal syntax</strong>
+                            <p>Arrays are written as <code>'{1,2,3}'</code> with curly braces and comma-separated values in single quotes.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Filter by name</strong>
+                            <p>Use WHERE clause to match each person by name.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Why this is correct</strong>
+                            <p>Each UPDATE sets the entire array value for one person. The array literal syntax is PostgreSQL's standard way to specify array values in SQL.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>UPDATE sample_table
+SET interests = '{1,3,5}'
+WHERE name = 'John Smith';
+
+UPDATE sample_table
+SET interests = '{2,4}'
+WHERE name = 'Jane Doe';
+
+UPDATE sample_table
+SET interests = '{1,2,3,4,5}'
+WHERE name = 'Bob Johnson';</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 15)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 3.10 -->
+            <div class="level-card" data-level="16">
+                <div class="level-header">
+                    <h3 class="level-title">Level 3.10 – Query Arrays: Contains 1 AND 5</h3>
+                    <span class="level-tag">Midterm – Section 3, Question 10</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Write a query that selects all data whose "interests" column contains the values 1 and 5 (in any order).</p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the SQL query you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Learn the @> operator</strong>
+                            <p>The <code>@></code> operator checks if an array contains all elements of another array.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Create the search array</strong>
+                            <p>We want to find arrays that contain both 1 AND 5, so we search for <code>'{1,5}'</code>.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Write the WHERE clause</strong>
+                            <p>Use <code>WHERE interests @> '{1,5}'</code> to find rows containing both values.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Why this is correct</strong>
+                            <p>The @> "contains" operator returns true only if the left array contains all elements from the right array. So interests @> '{1,5}' will match '{1,3,5}' and '{1,2,3,4,5}' but not '{2,4}'.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>SELECT *
+FROM sample_table
+WHERE interests @> '{1,5}';</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 16)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 3.11 -->
+            <div class="level-card" data-level="17">
+                <div class="level-header">
+                    <h3 class="level-title">Level 3.11 – Query Arrays: Contains 2 NOT 4</h3>
+                    <span class="level-tag">Midterm – Section 3, Question 11</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Write a query that selects all data whose "interests" column contains the value 2 but not the value 4.</p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the SQL query you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Check for 2 using @></strong>
+                            <p>Use <code>interests @> '{2}'</code> to find arrays containing 2.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Exclude 4 using NOT</strong>
+                            <p>Use <code>NOT interests @> '{4}'</code> to exclude arrays containing 4.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Combine with AND</strong>
+                            <p>Use both conditions in the WHERE clause with AND.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Why this is correct</strong>
+                            <p>This finds rows where 2 is present AND 4 is absent. Looking at our data: John has {1,3,5} (no 2), Jane has {2,4} (has 2 but also has 4), Bob has {1,2,3,4,5} (has both). None match! But the query structure is correct for this type of filtering.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>SELECT *
+FROM sample_table
+WHERE interests @> '{2}'
+  AND NOT interests @> '{4}';</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 17)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 3.12 -->
+            <div class="level-card" data-level="18">
+                <div class="level-header">
+                    <h3 class="level-title">Level 3.12 – Append to Array</h3>
+                    <span class="level-tag">Midterm – Section 3, Question 12</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Write a query that updates the "interests" column of the row with id=1 to add the value 2 at the end of the array.</p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the SQL command you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Use array_append function</strong>
+                            <p>PostgreSQL provides <code>array_append(array, element)</code> to add an element to the end of an array.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Reference the existing array</strong>
+                            <p>Use the column name itself: <code>array_append(interests, 2)</code> appends 2 to the current interests array.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Write the UPDATE with WHERE</strong>
+                            <p>Update where id=1 to target the specific row.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Why this is correct</strong>
+                            <p>array_append preserves the existing array values and adds the new value at the end. So if interests was '{1,3,5}', it becomes '{1,3,5,2}'. This is better than manually reconstructing the array.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>UPDATE sample_table
+SET interests = array_append(interests, 2)
+WHERE id = 1;</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 18)">✅ Mark this level as mastered</button>
+            </div>
+        </div>
+
+        <!-- WORLD 4: Backup & Restore Boss -->
+        <div class="world-section world-4" id="world4">
+            <div class="world-header">
+                <h2>💾 World 4 – Backup & Restore Boss</h2>
+                <p>Master database backup and recovery with pg_dump and pg_restore</p>
+            </div>
+
+            <div class="world-intro">
+                <h3>Critical Skills</h3>
+                <p>Learn how to protect your data through proper backup and restore procedures. These are essential skills for any database administrator.</p>
+
+                <h4 style="margin-top: 15px;">Skills Checklist:</h4>
+                <ul class="checklist" data-world="4">
+                    <li class="checklist-item" onclick="toggleCheck(this)">Use pg_dump for SQL backups</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">Restore with psql from SQL files</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">Use pg_restore for directory backups</li>
+                    <li class="checklist-item" onclick="toggleCheck(this)">Understand backup format options</li>
+                </ul>
+            </div>
+
+            <!-- Level 4.1 -->
+            <div class="level-card" data-level="19">
+                <div class="level-header">
+                    <h3 class="level-title">Level 4.1 – Backup Database to SQL File</h3>
+                    <span class="level-tag">Midterm – Section 4, Question 1</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Assuming you want to perform a backup using pg_dump, write the command to backup the entire database to a plain SQL file named "mydb_backup.sql". Make sure to include any necessary options and parameters.</p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the command you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Identify the tool</strong>
+                            <p><code>pg_dump</code> is PostgreSQL's utility for backing up databases.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Specify the database name</strong>
+                            <p>Use <code>-d database_name</code> or just <code>database_name</code> as the last argument.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Specify output file</strong>
+                            <p>Use <code>-f mydb_backup.sql</code> or redirect output with <code>&gt; mydb_backup.sql</code>.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Complete command</strong>
+                            <p>By default, pg_dump creates plain SQL format, which is what we want.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 5: Why this is correct</strong>
+                            <p>This creates a plain-text SQL file containing all the commands needed to recreate the database. The -f flag specifies the output file. This format is human-readable and can be restored with psql.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>pg_dump -d mydb -f mydb_backup.sql
+
+-- Alternative syntax:
+pg_dump mydb > mydb_backup.sql</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 19)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 4.2 -->
+            <div class="level-card" data-level="20">
+                <div class="level-header">
+                    <h3 class="level-title">Level 4.2 – Restore from SQL File</h3>
+                    <span class="level-tag">Midterm – Section 4, Question 2</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Write the command to restore the entire database from the plain SQL file "mydb_backup.sql". Make sure to include any necessary options and parameters.</p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the command you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Identify the tool</strong>
+                            <p><code>psql</code> is used to restore from plain SQL files (created by pg_dump).</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Specify the database</strong>
+                            <p>Use <code>-d database_name</code> to specify which database to restore into.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Specify the input file</strong>
+                            <p>Use <code>-f mydb_backup.sql</code> to read from the backup file.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Why this is correct</strong>
+                            <p>psql executes all SQL commands in the file. The -d flag specifies the target database, and -f specifies the file to read. You may need to create the database first if it doesn't exist.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>psql -d mydb -f mydb_backup.sql
+
+-- Alternative syntax:
+psql mydb < mydb_backup.sql</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 20)">✅ Mark this level as mastered</button>
+            </div>
+
+            <!-- Level 4.3 -->
+            <div class="level-card" data-level="21">
+                <div class="level-header">
+                    <h3 class="level-title">Level 4.3 – Restore from Directory Format</h3>
+                    <span class="level-tag">Midterm – Section 4, Question 3</span>
+                </div>
+
+                <div class="question-box">
+                    <h4>📋 Question:</h4>
+                    <p>Write the command to restore the entire database from the directory "mydb_backup_dir". Make sure to include any necessary options and parameters.</p>
+                </div>
+
+                <div class="try-yourself">
+                    <h4>✍️ Try it yourself:</h4>
+                    <textarea placeholder="Write the command you would use here..."></textarea>
+                </div>
+
+                <div class="hint-section">
+                    <button class="hint-button" onclick="showNextHint(this)">💡 Show next hint</button>
+                    <ul class="hint-list"></ul>
+                </div>
+
+                <div class="solution-section">
+                    <button class="solution-toggle" onclick="toggleSolution(this)">📖 Teacher Solution (Step by Step) ▼</button>
+                    <div class="solution-content">
+                        <div class="solution-step">
+                            <strong>Step 1: Identify the tool</strong>
+                            <p><code>pg_restore</code> is used for directory-format and custom-format backups (not plain SQL).</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 2: Specify the database</strong>
+                            <p>Use <code>-d database_name</code> to specify the target database.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 3: Specify the backup directory</strong>
+                            <p>Provide the directory path as the last argument.</p>
+                        </div>
+                        <div class="solution-step">
+                            <strong>Step 4: Why this is correct</strong>
+                            <p>pg_restore handles non-plain-text backup formats. The -d flag connects to the database and restores the data. Directory format allows parallel restore and selective table restoration, making it more flexible than plain SQL.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <strong>Final Answer:</strong>
+                    <pre>pg_restore -d mydb mydb_backup_dir
+
+-- With verbose output (recommended):
+pg_restore -d mydb -v mydb_backup_dir</pre>
+                </div>
+
+                <button class="master-button" onclick="markMastered(this, 21)">✅ Mark this level as mastered</button>
+            </div>
+        </div>
+
+        <footer style="text-align: center; color: white; padding: 40px 20px; margin-top: 60px;">
+            <h2>🎉 You've Completed All Worlds!</h2>
+            <p style="font-size: 1.2rem; margin-top: 20px;">
+                You're now ready to ace your COMP412 Advanced Database midterm!
+            </p>
+            <p style="margin-top: 15px; opacity: 0.9;">
+                Review any levels you haven't mastered yet, and good luck! 🚀
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Store hints data for each level
+        const hintsData = {
+            1: [
+                "Look for a system view that tracks database activity",
+                "The view is called pg_stat_activity",
+                "You need to SELECT columns: pid, usename, datname, state",
+                "The final query is: SELECT pid, usename, datname, state FROM pg_stat_activity;"
+            ],
+            2: [
+                "There are two functions: one to cancel queries, one to terminate connections",
+                "pg_cancel_backend() is the gentle approach",
+                "pg_terminate_backend() is the forceful approach",
+                "Both functions take a PID as parameter: pg_cancel_backend(12345)"
+            ],
+            3: [
+                "You need to find all PIDs for a specific role name",
+                "Use pg_stat_activity to find connections by usename",
+                "Use pg_terminate_backend() in a SELECT with a WHERE clause",
+                "Filter by usename and exclude your own connection with pid <> pg_backend_pid()"
+            ],
+            4: [
+                "Use CREATE ROLE with LOGIN option",
+                "Add PASSWORD clause for authentication",
+                "Use VALID UNTIL to set expiration date",
+                "Then GRANT SELECT, INSERT, UPDATE on the table"
+            ],
+            5: [
+                "Create the role without LOGIN (it's a group role)",
+                "Use GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public",
+                "Add user to role with GRANT role_name TO user_name",
+                "Ensure inheritance with ALTER ROLE user INHERIT"
+            ],
+            6: [
+                "Create user with CREATE ROLE ... WITH LOGIN PASSWORD",
+                "Add to dev_team with GRANT dev_team TO new_user",
+                "Test with SELECT * FROM employee_data",
+                "Try INSERT or UPDATE to test write permissions"
+            ],
+            7: [
+                "First CREATE DATABASE sample_db",
+                "Connect with \\c sample_db",
+                "Create table with SERIAL for id",
+                "Use VARCHAR(50), NUMERIC(4,2), and TEXT for other columns"
+            ],
+            8: [
+                "Use the COPY command for bulk imports",
+                "Specify FORMAT csv and HEADER true",
+                "List only the columns in the CSV (not id)",
+                "FROM clause needs the full file path"
+            ],
+            9: [
+                "Use the LPAD() string function",
+                "Syntax is LPAD(string, length, fill_character)",
+                "LPAD(name, 20, ' ') pads with spaces to 20 characters",
+                "Use it in SELECT: SELECT LPAD(name, 20, ' ') FROM ..."
+            ],
+            10: [
+                "Use the TRIM() function",
+                "TRIM() removes leading and trailing whitespace",
+                "Apply it to description column",
+                "SELECT TRIM(description) AS description FROM sample_table"
+            ],
+            11: [
+                "Use ALTER TABLE to modify table structure",
+                "Use ADD COLUMN to add new column",
+                "DATE type stores dates without time",
+                "ALTER TABLE sample_table ADD COLUMN birthdate DATE;"
+            ],
+            12: [
+                "Use ALTER TABLE ADD COLUMN again",
+                "TIMESTAMP WITH TIME ZONE stores date, time, and timezone",
+                "Can abbreviate as TIMESTAMPTZ",
+                "ALTER TABLE sample_table ADD COLUMN last_login TIMESTAMPTZ;"
+            ],
+            13: [
+                "Use CREATE SEQUENCE command",
+                "START WITH 100 sets the starting value",
+                "INCREMENT BY 10 sets the step",
+                "CREATE SEQUENCE sample_sequence START WITH 100 INCREMENT BY 10;"
+            ],
+            14: [
+                "Use ALTER TABLE ADD COLUMN",
+                "Array type is declared with [] after the base type",
+                "For integer array use INTEGER[]",
+                "ALTER TABLE sample_table ADD COLUMN interests INTEGER[];"
+            ],
+            15: [
+                "Use UPDATE statements",
+                "Array literals use curly braces: '{1,2,3}'",
+                "Filter by name in WHERE clause",
+                "UPDATE sample_table SET interests = '{1,3,5}' WHERE name = 'John Smith';"
+            ],
+            16: [
+                "Use the @> 'contains' operator",
+                "@> checks if left array contains all elements of right array",
+                "interests @> '{1,5}' finds arrays with both 1 and 5",
+                "SELECT * FROM sample_table WHERE interests @> '{1,5}';"
+            ],
+            17: [
+                "Use @> to check for 2: interests @> '{2}'",
+                "Use NOT @> to exclude 4: NOT interests @> '{4}'",
+                "Combine both conditions with AND",
+                "WHERE interests @> '{2}' AND NOT interests @> '{4}'"
+            ],
+            18: [
+                "Use the array_append() function",
+                "Syntax: array_append(array, new_element)",
+                "Reference the column itself: array_append(interests, 2)",
+                "UPDATE sample_table SET interests = array_append(interests, 2) WHERE id = 1;"
+            ],
+            19: [
+                "Use pg_dump command",
+                "Specify database with -d flag or as last argument",
+                "Use -f flag for output file",
+                "pg_dump -d mydb -f mydb_backup.sql"
+            ],
+            20: [
+                "Use psql to restore plain SQL files",
+                "Specify database with -d flag",
+                "Use -f flag for input file",
+                "psql -d mydb -f mydb_backup.sql"
+            ],
+            21: [
+                "Use pg_restore for directory/custom format backups",
+                "Specify database with -d flag",
+                "Provide directory path as last argument",
+                "pg_restore -d mydb mydb_backup_dir"
+            ]
+        };
+
+        // Track hint progress for each level
+        const hintProgress = {};
+
+        // Track mastered levels
+        let masteredLevels = new Set();
+        const totalLevels = 21;
+
+        // Load saved progress from localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('midtermProgress');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    masteredLevels = new Set(data.masteredLevels || []);
+
+                    // Restore mastered state
+                    masteredLevels.forEach(level => {
+                        const card = document.querySelector(`[data-level="${level}"]`);
+                        if (card) {
+                            card.classList.add('mastered');
+                            const button = card.querySelector('.master-button');
+                            if (button) {
+                                button.textContent = 'Mastered ✓';
+                                button.classList.add('mastered');
+                            }
+                        }
+                    });
+
+                    updateProgress();
+                } catch (e) {
+                    console.error('Error loading progress:', e);
+                }
+            }
+        }
+
+        // Save progress to localStorage
+        function saveProgress() {
+            const data = {
+                masteredLevels: Array.from(masteredLevels)
+            };
+            localStorage.setItem('midtermProgress', JSON.stringify(data));
+        }
+
+        // Smooth scroll to world
+        function scrollToWorld(worldId) {
+            const element = document.getElementById(worldId);
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Toggle checklist item
+        function toggleCheck(item) {
+            item.classList.toggle('checked');
+        }
+
+        // Show next hint
+        function showNextHint(button) {
+            const card = button.closest('.level-card');
+            const level = parseInt(card.getAttribute('data-level'));
+            const hintList = button.nextElementSibling;
+
+            if (!hintProgress[level]) {
+                hintProgress[level] = 0;
+            }
+
+            const hints = hintsData[level];
+            if (hintProgress[level] < hints.length) {
+                const hint = document.createElement('li');
+                hint.className = 'hint-item';
+                hint.textContent = `Hint ${hintProgress[level] + 1}: ${hints[hintProgress[level]]}`;
+                hintList.appendChild(hint);
+                hintProgress[level]++;
+
+                if (hintProgress[level] >= hints.length) {
+                    button.textContent = '💡 All hints shown';
+                    button.disabled = true;
+                    button.style.opacity = '0.5';
+                    button.style.cursor = 'default';
+                }
+            }
+        }
+
+        // Toggle solution visibility
+        function toggleSolution(button) {
+            const content = button.nextElementSibling;
+            content.classList.toggle('show');
+
+            if (content.classList.contains('show')) {
+                button.textContent = '📖 Teacher Solution (Step by Step) ▲';
+            } else {
+                button.textContent = '📖 Teacher Solution (Step by Step) ▼';
+            }
+        }
+
+        // Copy code to clipboard
+        function copyCode(button) {
+            const answerBox = button.closest('.final-answer');
+            const code = answerBox.querySelector('pre').textContent;
+
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '✓ Copied!';
+                button.style.background = '#10b981';
+
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '#3b82f6';
+                }, 2000);
+            });
+        }
+
+        // Mark level as mastered
+        function markMastered(button, level) {
+            if (button.classList.contains('mastered')) {
+                return;
+            }
+
+            const card = button.closest('.level-card');
+            card.classList.add('mastered');
+            button.textContent = 'Mastered ✓';
+            button.classList.add('mastered');
+
+            masteredLevels.add(level);
+            updateProgress();
+            saveProgress();
+
+            // Celebration animation
+            confetti(card);
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const percentage = Math.round((masteredLevels.size / totalLevels) * 100);
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+
+            progressBar.style.width = percentage + '%';
+            progressText.textContent = percentage + '%';
+        }
+
+        // Simple confetti effect
+        function confetti(element) {
+            const colors = ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6'];
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.width = '10px';
+                    confetti.style.height = '10px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = (element.getBoundingClientRect().left + Math.random() * element.offsetWidth) + 'px';
+                    confetti.style.top = element.getBoundingClientRect().top + 'px';
+                    confetti.style.borderRadius = '50%';
+                    confetti.style.pointerEvents = 'none';
+                    confetti.style.zIndex = '9999';
+                    document.body.appendChild(confetti);
+
+                    const tx = (Math.random() - 0.5) * 200;
+                    const ty = Math.random() * 300 + 100;
+
+                    confetti.animate([
+                        { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
+                        { transform: `translate(${tx}px, ${ty}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                    ], {
+                        duration: 1000 + Math.random() * 500,
+                        easing: 'cubic-bezier(0, .9, .57, 1)'
+                    }).onfinish = () => confetti.remove();
+                }, i * 20);
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProgress();
+        });
+    </script>
+</body>
+</html>
