@@ -1,0 +1,136 @@
+--Hussein El Saadi - Assignment1 Advanced Database
+
+-----activity 1-----
+CREATE TABLE customer (
+  name TEXT NOT NULL, 
+  street_number INT NOT NULL,
+  PRIMARY KEY (name, street_number)
+);
+
+CREATE TABLE orderr(
+  date_of_receipt DATE NOT NULL,
+  cname TEXT NOT NULL,
+  cstreet_number INT NOT NULL,
+  PRIMARY KEY (date_of_receipt, cname, cstreet_number), 
+  FOREIGN KEY (cname, cstreet_number) REFERENCES customer(name, street_number)
+  ON DELETE CASCADE,
+  UNIQUE (date_of_receipt) 
+);
+
+CREATE TABLE order_item(
+  item_name TEXT NOT NULL,
+  item_price INT NOT NULL,
+  odate_of_receipt DATE NOT NULL,
+  PRIMARY KEY (item_name, odate_of_receipt),  
+  FOREIGN KEY (odate_of_receipt) REFERENCES orderr(date_of_receipt)  
+  ON DELETE CASCADE
+);
+
+
+
+
+
+-----activity 2-----
+--here we have inserted random data
+
+INSERT INTO customer (name, street_number) VALUES 
+('Alice', 101),
+('Bob', 202),
+('Charlie', 303),
+('Diana', 404),
+('Eve', 505),
+('Frank', 606);
+
+INSERT INTO orderr (date_of_receipt, cname, cstreet_number) VALUES 
+('2024-11-01', 'Alice', 101),
+('2024-11-02', 'Bob', 202),
+('2024-11-03', 'Charlie', 303),
+('2024-11-04', 'Diana', 404),
+('2024-11-05', 'Eve', 505),
+('2024-11-06', 'Frank', 606);
+
+INSERT INTO order_item (item_name, item_price, odate_of_receipt) VALUES 
+('Laptop', 2500, '2024-11-01'),
+('Tablet', 1000, '2024-11-02'),
+('Smartphone', 1500, '2024-11-03'),
+('Headphones', 150, '2024-11-04'),
+('Keyboard', 100, '2024-11-05'),
+('Monitor', 300, '2024-11-06');
+
+SELECT * FROM order_item;
+
+-----activity 3-----
+DROP ROLE IF EXISTS tracey, bill, sheila, govind,order_processors_staff;
+
+CREATE ROLE tracey LOGIN PASSWORD '123';
+ALTER DATABASE assignment1 OWNER TO tracey;
+ALTER TABLE customer OWNER TO tracey;
+ALTER TABLE orderr OWNER TO tracey;
+ALTER TABLE order_item OWNER TO tracey;
+
+CREATE ROLE bill WITH LOGIN PASSWORD '123';
+CREATE ROLE sheila WITH LOGIN PASSWORD '123';
+GRANT SELECT, UPDATE, DELETE ON CUSTOMER TO bill, sheila;
+GRANT SELECT, INSERT, UPDATE, DELETE ON orderr TO bill, sheila;
+GRANT SELECT, INSERT, UPDATE, DELETE ON order_item TO bill, sheila;
+
+
+
+
+CREATE ROLE govind WITH LOGIN PASSWORD '123';
+GRANT SELECT, UPDATE, DELETE ON CUSTOMER TO govind;
+GRANT SELECT, INSERT, UPDATE, DELETE ON orderr TO govind;
+GRANT SELECT, INSERT, UPDATE, DELETE ON order_item TO govind;
+
+CREATE ROLE order_processors_staff;
+
+DROP ROLE IF EXISTS user1, user2, user3;
+CREATE ROLE user1 WITH LOGIN PASSWORD '123';
+CREATE ROLE user2 WITH LOGIN PASSWORD '123';
+CREATE ROLE user3 WITH LOGIN PASSWORD '123';
+
+GRANT order_processors_staff TO user1, user2, user3;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON orderr TO order_processors_staff;
+GRANT SELECT, INSERT, UPDATE, DELETE ON order_item TO order_processors_staff;
+REVOKE ALL ON customer FROM order_processors_staff; -- they can't access customer data
+ALTER TABLE order_item ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY handle_price_policy_bill_sheila 
+  ON order_item 
+  FOR ALL 
+  TO bill, sheila
+  USING (item_price < 1000) 
+  WITH CHECK (item_price < 1000);
+
+CREATE POLICY handle_price_policy_govind
+  ON order_item 
+  FOR ALL 
+  TO govind
+  USING (item_price > 0) 
+  WITH CHECK (item_price > 0);
+
+CREATE POLICY handle_price_policy_order_processors_staff
+  ON order_item 
+  FOR ALL 
+  TO order_processors_staff 
+  USING (item_price < 1000) 
+  WITH CHECK (item_price < 1000);
+
+DROP POLICY IF EXISTS handle_price_policy ON order_item;
+DROP POLICY IF EXISTS handle_price_policy2 ON order_item;
+
+
+-----activity 4-----
+SET ROLE govind;
+SELECT * FROM order_item;--it will shows all the items
+
+SET ROLE user1;
+SELECT * FROM customer;--it will gives permission error
+
+SET ROLE bill;
+SELECT * FROM order_item;-- it will show items which prices are under 1000
+
+-----------------------------------------
+-- Tracy was an owner in this database so she could make anything shi wants and has all the privileges
+-- so she could delete the tables and changes her password and more things.
