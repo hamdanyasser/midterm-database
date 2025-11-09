@@ -16,12 +16,59 @@
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
             color: #333;
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Top Navigation Bar */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .nav-logo {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            background: rgba(59, 130, 246, 0.2);
+            color: white;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 80px 20px 20px 20px; /* Top padding for fixed nav */
         }
 
         header {
@@ -46,13 +93,27 @@
         .progress-container {
             background: rgba(255,255,255,0.2);
             border-radius: 20px;
-            padding: 10px;
+            padding: 15px;
             margin: 20px auto;
-            max-width: 600px;
+            max-width: 700px;
+        }
+
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .stars-counter {
+            font-size: 1.2rem;
         }
 
         .progress-bar {
-            height: 30px;
+            height: 35px;
             background: linear-gradient(90deg, #10b981, #3b82f6);
             border-radius: 15px;
             transition: width 0.5s ease;
@@ -62,6 +123,12 @@
             color: white;
             font-weight: bold;
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8); }
         }
 
         .motivation {
@@ -71,10 +138,71 @@
             font-style: italic;
         }
 
+        /* How to Use Section */
+        .how-to-use {
+            background: rgba(255,255,255,0.15);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px auto;
+            max-width: 800px;
+            color: white;
+        }
+
+        .how-to-use h3 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .how-to-use ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .how-to-use li {
+            padding: 8px 0 8px 30px;
+            position: relative;
+        }
+
+        .how-to-use li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        /* Success Banner */
+        .success-banner {
+            display: none;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 40px 0;
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .success-banner.show {
+            display: block;
+        }
+
+        .success-banner h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
         .world-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
             margin: 40px 0;
         }
 
@@ -86,11 +214,29 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .world-card:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+
+        .world-card:hover:before {
+            left: 100%;
         }
 
         .world-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transform: translateY(-10px) scale(1.02) perspective(1000px) rotateX(5deg);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
         }
 
         .world-card.world-1 { border-top: 5px solid #3b82f6; }
@@ -101,6 +247,17 @@
         .world-card h3 {
             font-size: 1.5rem;
             margin-bottom: 10px;
+        }
+
+        .world-badge {
+            display: inline-block;
+            background: #e2e8f0;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            color: #64748b;
+            font-weight: 600;
         }
 
         .world-section {
@@ -172,6 +329,257 @@
             100% { transform: scale(1); }
         }
 
+        /* Interactive Lab Styles */
+        .interactive-lab {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 2px solid #3b82f6;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .interactive-lab h3 {
+            color: #1e40af;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .sim-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .sim-table th {
+            background: #1e293b;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .sim-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .sim-table tr:hover {
+            background: #f8fafc;
+        }
+
+        .sim-table .state-active { color: #10b981; font-weight: bold; }
+        .sim-table .state-idle { color: #6b7280; }
+
+        .action-btn {
+            padding: 6px 12px;
+            margin: 2px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn.cancel { background: #fbbf24; color: #78350f; }
+        .action-btn.cancel:hover { background: #f59e0b; }
+        .action-btn.terminate { background: #ef4444; color: white; }
+        .action-btn.terminate:hover { background: #dc2626; }
+        .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .lab-controls {
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .lab-controls input {
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .lab-controls button {
+            padding: 10px 20px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .lab-controls button:hover {
+            background: #2563eb;
+            transform: scale(1.05);
+        }
+
+        .lab-output {
+            background: #1e293b;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+
+        .roles-diagram {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+        }
+
+        .diagram-node {
+            padding: 20px;
+            border-radius: 12px;
+            min-width: 150px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .diagram-node:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+        .diagram-node.user { background: linear-gradient(135deg, #dbeafe, #bfdbfe); border: 2px solid #3b82f6; }
+        .diagram-node.role { background: linear-gradient(135deg, #fed7aa, #fdba74); border: 2px solid #f97316; }
+        .diagram-node.table { background: linear-gradient(135deg, #e9d5ff, #d8b4fe); border: 2px solid #a855f7; }
+
+        .diagram-arrow { font-size: 2rem; color: #3b82f6; }
+
+        .array-pill {
+            display: inline-block;
+            padding: 4px 10px;
+            margin: 2px;
+            background: #3b82f6;
+            color: white;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .sequence-widget {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .sequence-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #3b82f6;
+            margin: 15px 0;
+        }
+
+        .backup-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            flex-wrap: wrap;
+        }
+
+        .flow-box {
+            padding: 25px;
+            border-radius: 12px;
+            min-width: 150px;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .flow-box.database { background: linear-gradient(135deg, #dbeafe, #bfdbfe); border: 3px solid #3b82f6; }
+        .flow-box.file { background: linear-gradient(135deg, #fef3c7, #fde68a); border: 3px solid #f59e0b; }
+
+        .flow-arrow {
+            font-size: 2.5rem;
+            color: #3b82f6;
+            animation: flowPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes flowPulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .cheat-sheets {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 60px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .cheat-sheets h2 {
+            color: #1e293b;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .cheat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .cheat-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 5px solid #3b82f6;
+        }
+
+        .cheat-card h3 {
+            color: #1e40af;
+            margin-bottom: 15px;
+        }
+
+        .cheat-card code {
+            background: #1e293b;
+            color: #10b981;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .cheat-card ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .cheat-card li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .cheat-card li:last-child {
+            border-bottom: none;
+        }
+
         .level-card {
             background: white;
             border: 2px solid #e2e8f0;
@@ -179,6 +587,7 @@
             padding: 30px;
             margin: 30px 0;
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .level-card.mastered {
@@ -190,15 +599,41 @@
         .level-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             margin-bottom: 20px;
             flex-wrap: wrap;
             gap: 10px;
         }
 
+        .level-title-group {
+            flex: 1;
+        }
+
+        .concept-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
         .level-title {
             font-size: 1.4rem;
             font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .what-this-tests {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            font-style: italic;
         }
 
         .level-tag {
@@ -207,6 +642,7 @@
             border-radius: 20px;
             font-size: 0.9rem;
             color: #64748b;
+            white-space: nowrap;
         }
 
         .question-box {
@@ -446,19 +882,55 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Top Navigation Bar -->
+    <nav class="top-nav">
+        <div class="nav-logo">🎮 Advanced Database Midterm Adventure – COMP412</div>
+        <ul class="nav-links">
+            <li><a href="#top">🏠 Home</a></li>
+            <li><a href="#world1">🌐 World 1</a></li>
+            <li><a href="#world2">👥 World 2</a></li>
+            <li><a href="#world3">🔬 World 3</a></li>
+            <li><a href="#world4">💾 World 4</a></li>
+            <li><a href="#cheatsheets">📚 Cheat Sheets</a></li>
+        </ul>
+    </nav>
+
+    <div class="container" id="top">
         <header>
             <h1>🎮 Advanced Database Midterm Adventure – COMP412</h1>
-            <p class="subtitle">Connections • Roles • Tables & Arrays • Backup & Restore – turned into mini levels</p>
+            <p class="subtitle">Interactive Lab: Connections • Roles • Tables & Arrays • Backup & Restore</p>
 
             <div class="progress-container">
-                <div class="progress-bar" id="progressBar" style="width: 0%;">
-                    <span id="progressText">0%</span>
+                <div class="progress-stats">
+                    <span id="progressPercentage">0%</span>
+                    <span class="stars-counter" id="starsDisplay">⭐ 0 / 21 Stars</span>
+                </div>
+                <div style="background: rgba(255,255,255,0.3); border-radius: 15px; overflow: hidden;">
+                    <div class="progress-bar" id="progressBar" style="width: 0%;">
+                        <span id="progressText">Start Your Journey!</span>
+                    </div>
                 </div>
             </div>
 
             <p class="motivation">Finish all levels = you mentally finish this exact midterm.</p>
+
+            <div class="how-to-use">
+                <h3>📖 How to Master This Midterm:</h3>
+                <ul>
+                    <li><strong>Explore Interactive Simulations</strong> – See database concepts in action with live demos</li>
+                    <li><strong>Try Writing Commands</strong> – Practice in the textarea, then check hints and solutions</li>
+                    <li><strong>Use the Lab Tools</strong> – Click buttons to simulate queries, see results in real-time</li>
+                    <li><strong>Mark Levels as Mastered</strong> – Track your progress and earn stars for each level</li>
+                </ul>
+            </div>
         </header>
+
+        <!-- Success Banner -->
+        <div class="success-banner" id="successBanner">
+            <h2>🎉 Congratulations! 🎉</h2>
+            <p style="font-size: 1.3rem;">You've mastered all 21 levels!</p>
+            <p style="font-size: 1.1rem; margin-top: 10px;">You're ready to ace your COMP412 Advanced Database midterm! 🚀</p>
+        </div>
 
         <!-- World Navigation Cards -->
         <div class="world-cards">
@@ -466,21 +938,25 @@
                 <h3>🌐 World 1</h3>
                 <p><strong>Connection Control Arena</strong></p>
                 <p>Manage database connections like a pro</p>
+                <span class="badge">3 levels</span>
             </div>
             <div class="world-card world-2" onclick="scrollToWorld('world2')">
                 <h3>👥 World 2</h3>
                 <p><strong>Roles & Permissions City</strong></p>
                 <p>Master user management and security</p>
+                <span class="badge">3 levels</span>
             </div>
             <div class="world-card world-3" onclick="scrollToWorld('world3')">
                 <h3>🔬 World 3</h3>
                 <p><strong>Sample DB Lab</strong></p>
                 <p>Build databases with advanced types</p>
+                <span class="badge">12 levels</span>
             </div>
             <div class="world-card world-4" onclick="scrollToWorld('world4')">
                 <h3>💾 World 4</h3>
                 <p><strong>Backup & Restore Boss</strong></p>
                 <p>Protect your data with backups</p>
+                <span class="badge">3 levels</span>
             </div>
         </div>
 
@@ -504,11 +980,49 @@
                 </ul>
             </div>
 
+            <!-- Interactive Lab: Connection Control Arena -->
+            <div class="interactive-lab">
+                <h3>🎮 Interactive Lab: Connection Control Arena</h3>
+                <p>Practice managing database connections in real-time! This simulates PostgreSQL's <code>pg_stat_activity</code> view.</p>
+
+                <div style="margin: 20px 0;">
+                    <button class="lab-button" onclick="runQuerySim()">▶️ Simulate Running Query</button>
+                    <button class="lab-button" onclick="refreshConnections()">🔄 Refresh Connections</button>
+                    <input type="text" id="roleTerminateInput" placeholder="Enter role name..." style="padding: 10px; border-radius: 5px; border: 2px solid #3b82f6; margin-left: 15px;">
+                    <button class="lab-button" onclick="terminateAllByRole()">🔪 Terminate All for Role</button>
+                </div>
+
+                <table class="sim-table" id="connectionTable">
+                    <thead>
+                        <tr>
+                            <th>PID</th>
+                            <th>Username</th>
+                            <th>Database</th>
+                            <th>State</th>
+                            <th>Query</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="connectionTableBody">
+                        <!-- Connections will be rendered here -->
+                    </tbody>
+                </table>
+
+                <div class="lab-output" id="labOutput1"></div>
+            </div>
+
             <!-- Level 1.1 -->
             <div class="level-card" data-level="1">
                 <div class="level-header">
-                    <h3 class="level-title">Level 1.1 – List Recent Connections & PIDs</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">pg_stat_activity</span>
+                        <h3 class="level-title">Level 1.1 – List Recent Connections & PIDs</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 1, Question 1</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Your ability to query the system view that tracks all active database connections and their process identifiers.
                 </div>
 
                 <div class="question-box">
@@ -561,8 +1075,15 @@ FROM pg_stat_activity;</pre>
             <!-- Level 1.2 -->
             <div class="level-card" data-level="2">
                 <div class="level-header">
-                    <h3 class="level-title">Level 1.2 – Cancel and Terminate Connections</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">pg_cancel_backend / pg_terminate_backend</span>
+                        <h3 class="level-title">Level 1.2 – Cancel and Terminate Connections</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 1, Question 2</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Understanding the difference between gracefully canceling a query vs forcefully terminating a connection, and when to use each function.
                 </div>
 
                 <div class="question-box">
@@ -618,8 +1139,15 @@ SELECT pg_terminate_backend(12345);  -- Replace 12345 with actual PID</pre>
             <!-- Level 1.3 -->
             <div class="level-card" data-level="3">
                 <div class="level-header">
-                    <h3 class="level-title">Level 1.3 – Kill All Connections for a Role</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">Subquery + pg_terminate_backend</span>
+                        <h3 class="level-title">Level 1.3 – Kill All Connections for a Role</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 1, Question 3</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Combining subqueries with backend management functions to terminate multiple connections matching a specific criteria (role name).
                 </div>
 
                 <div class="question-box">
@@ -694,11 +1222,42 @@ WHERE usename = 'role_name'  -- Replace with actual role name
                 </ul>
             </div>
 
+            <!-- Interactive Lab: Roles & Permissions Simulator -->
+            <div class="interactive-lab">
+                <h3>🎮 Interactive Lab: Roles & Permissions Diagram</h3>
+                <p>Visualize role relationships and grant permissions! Watch how roles inherit from each other.</p>
+
+                <div style="margin: 20px 0;">
+                    <button class="lab-button" onclick="applyLevel2_1()">Apply Level 2.1 (Create dev_user)</button>
+                    <button class="lab-button" onclick="applyLevel2_2()">Apply Level 2.2 (Create developer role)</button>
+                    <button class="lab-button" onclick="applyLevel2_3()">Apply Level 2.3 (Test as dev_user)</button>
+                    <button class="lab-button" onclick="resetRolesDiagram()">🔄 Reset Diagram</button>
+                </div>
+
+                <div class="roles-diagram" id="rolesDiagram">
+                    <div class="role-node" id="superuserNode">
+                        <strong>Superuser</strong>
+                        <div class="role-permissions">All privileges</div>
+                    </div>
+                    <div id="rolesContainer"></div>
+                    <div id="usersContainer"></div>
+                </div>
+
+                <div class="lab-output" id="labOutput2"></div>
+            </div>
+
             <!-- Level 2.1 -->
             <div class="level-card" data-level="4">
                 <div class="level-header">
-                    <h3 class="level-title">Level 2.1 – Create dev_user with Permissions</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">CREATE ROLE + GRANT</span>
+                        <h3 class="level-title">Level 2.1 – Create dev_user with Permissions</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 2, Question 1</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Creating a user with LOGIN capability, setting password and expiration date with VALID UNTIL, and granting SELECT/INSERT/UPDATE permissions to a table.
                 </div>
 
                 <div class="question-box">
@@ -760,8 +1319,15 @@ GRANT SELECT, INSERT, UPDATE ON employee_data TO dev_user;</pre>
             <!-- Level 2.2 -->
             <div class="level-card" data-level="5">
                 <div class="level-header">
-                    <h3 class="level-title">Level 2.2 – Create dev_team Role with Inheritance</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">Role Inheritance + GRANT ROLE</span>
+                        <h3 class="level-title">Level 2.2 – Create dev_team Role with Inheritance</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 2, Question 2</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Creating a group role (without LOGIN), assigning users as members using GRANT, and understanding how permissions inherit to role members.
                 </div>
 
                 <div class="question-box">
@@ -827,8 +1393,15 @@ ALTER ROLE dev_user INHERIT;</pre>
             <!-- Level 2.3 -->
             <div class="level-card" data-level="6">
                 <div class="level-header">
-                    <h3 class="level-title">Level 2.3 – Add New Developer and Test Access</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">Role Membership Testing + SET ROLE</span>
+                        <h3 class="level-title">Level 2.3 – Add New Developer and Test Access</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 2, Question 3</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Adding a new user to an existing role group and testing inherited permissions by connecting as that user or using SET ROLE.
                 </div>
 
                 <div class="question-box">
@@ -917,11 +1490,61 @@ INSERT INTO employee_data VALUES (...);  -- with appropriate values</pre>
                 </ul>
             </div>
 
+            <!-- Interactive Lab: Sample DB Simulator -->
+            <div class="interactive-lab">
+                <h3>🎮 Interactive Lab: Sample Table Playground</h3>
+                <p>Create and manipulate a sample table with various data types! Try string functions, sequences, and array operations.</p>
+
+                <div style="margin: 20px 0; display: flex; flex-wrap: wrap; gap: 10px;">
+                    <button class="lab-button" onclick="createSampleTable()">Create Table</button>
+                    <button class="lab-button" onclick="loadSampleCSV()">📂 Load CSV Data</button>
+                    <button class="lab-button" onclick="applyLPAD()">🔧 Apply LPAD</button>
+                    <button class="lab-button" onclick="applyTRIM()">✂️ Apply TRIM</button>
+                    <button class="lab-button" onclick="addDateColumn()">📅 Add Date Column</button>
+                    <button class="lab-button" onclick="addTimestampColumn()">⏰ Add Timestamp Column</button>
+                    <button class="lab-button" onclick="showSequenceWidget()">🔢 Create Sequence</button>
+                    <button class="lab-button" onclick="addArrayColumn()">🔵 Add Array Column</button>
+                    <button class="lab-button" onclick="queryArrays()">🔍 Query Arrays (@>)</button>
+                    <button class="lab-button" onclick="appendToArray()">➕ Array Append</button>
+                    <button class="lab-button" onclick="resetSampleTable()">🔄 Reset Table</button>
+                </div>
+
+                <div id="sequenceWidget" class="sequence-widget" style="display: none;">
+                    <h4>Sequence Configuration</h4>
+                    <label>Start Value: <input type="number" id="seqStart" value="100"></label>
+                    <label>Increment By: <input type="number" id="seqIncrement" value="5"></label>
+                    <button class="lab-button" onclick="createSequence()">Create Sequence</button>
+                </div>
+
+                <table class="sim-table" id="sampleTableDisplay">
+                    <thead id="sampleTableHeader">
+                        <tr>
+                            <th>id</th>
+                            <th>name</th>
+                            <th>age</th>
+                            <th>description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sampleTableBody">
+                        <tr><td colspan="4" style="text-align: center; color: #64748b;">Table not created yet. Click "Create Table" to start!</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="lab-output" id="labOutput3"></div>
+            </div>
+
             <!-- Level 3.1 -->
             <div class="level-card" data-level="7">
                 <div class="level-header">
-                    <h3 class="level-title">Level 3.1 – Create Database and Table</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">CREATE DATABASE + TABLE with SERIAL, VARCHAR, NUMERIC, TEXT</span>
+                        <h3 class="level-title">Level 3.1 – Create Database and Table</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 3, Question 1</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Creating a database and table with various data types including auto-incrementing SERIAL, VARCHAR with length limits, NUMERIC with precision/scale, and TEXT.
                 </div>
 
                 <div class="question-box">
@@ -991,8 +1614,15 @@ CREATE TABLE sample_table (
             <!-- Level 3.2 -->
             <div class="level-card" data-level="8">
                 <div class="level-header">
-                    <h3 class="level-title">Level 3.2 – Import CSV Data</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">COPY FROM CSV</span>
+                        <h3 class="level-title">Level 3.2 – Import CSV Data</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 3, Question 2</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Using the COPY command to efficiently import data from a CSV file with headers into a PostgreSQL table.
                 </div>
 
                 <div class="question-box">
@@ -1051,8 +1681,15 @@ WITH (FORMAT csv, HEADER true);</pre>
             <!-- Level 3.3 -->
             <div class="level-card" data-level="9">
                 <div class="level-header">
-                    <h3 class="level-title">Level 3.3 – Pad Name Column with LPAD</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">LPAD String Function</span>
+                        <h3 class="level-title">Level 3.3 – Pad Name Column with LPAD</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 3, Question 3</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Using the LPAD string function to left-pad values with spaces to achieve a fixed width for formatting.
                 </div>
 
                 <div class="question-box">
@@ -1105,8 +1742,15 @@ FROM sample_table;</pre>
             <!-- Level 3.4 -->
             <div class="level-card" data-level="10">
                 <div class="level-header">
-                    <h3 class="level-title">Level 3.4 – Trim Whitespace with TRIM</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">TRIM String Function</span>
+                        <h3 class="level-title">Level 3.4 – Trim Whitespace with TRIM</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 3, Question 4</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Using the TRIM function to remove leading and trailing whitespace from text values for data cleaning.
                 </div>
 
                 <div class="question-box">
@@ -1159,8 +1803,15 @@ FROM sample_table;</pre>
             <!-- Level 3.5 -->
             <div class="level-card" data-level="11">
                 <div class="level-header">
-                    <h3 class="level-title">Level 3.5 – Add Birthdate Column</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">ALTER TABLE ADD COLUMN with DATE</span>
+                        <h3 class="level-title">Level 3.5 – Add Birthdate Column</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 3, Question 5</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Using ALTER TABLE to add a new column with the DATE data type for storing calendar dates.
                 </div>
 
                 <div class="question-box">
@@ -1213,8 +1864,15 @@ ADD COLUMN birthdate DATE;</pre>
             <!-- Level 3.6 -->
             <div class="level-card" data-level="12">
                 <div class="level-header">
-                    <h3 class="level-title">Level 3.6 – Add Last Login Column</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">TIMESTAMPTZ (Timestamp with Time Zone)</span>
+                        <h3 class="level-title">Level 3.6 – Add Last Login Column</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 3, Question 6</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Adding a TIMESTAMPTZ column to store timestamps with time zone information for accurate time tracking across different locations.
                 </div>
 
                 <div class="question-box">
@@ -1271,8 +1929,15 @@ ADD COLUMN last_login TIMESTAMPTZ;</pre>
             <!-- Level 3.7 -->
             <div class="level-card" data-level="13">
                 <div class="level-header">
-                    <h3 class="level-title">Level 3.7 – Create Custom Sequence</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">CREATE SEQUENCE with START and INCREMENT</span>
+                        <h3 class="level-title">Level 3.7 – Create Custom Sequence</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 3, Question 7</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Creating a custom sequence generator with specific starting value and increment for generating unique numbers beyond SERIAL defaults.
                 </div>
 
                 <div class="question-box">
@@ -1326,8 +1991,15 @@ INCREMENT BY 10;</pre>
             <!-- Level 3.8 -->
             <div class="level-card" data-level="14">
                 <div class="level-header">
-                    <h3 class="level-title">Level 3.8 – Add Integer Array Column</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">INTEGER[] Array Type</span>
+                        <h3 class="level-title">Level 3.8 – Add Integer Array Column</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 3, Question 8</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Working with PostgreSQL's native array data type (INTEGER[]) to store multiple values in a single column.
                 </div>
 
                 <div class="question-box">
@@ -1380,8 +2052,15 @@ ADD COLUMN interests INTEGER[];</pre>
             <!-- Level 3.9 -->
             <div class="level-card" data-level="15">
                 <div class="level-header">
-                    <h3 class="level-title">Level 3.9 – Update Arrays for Each Person</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">UPDATE with Array Literal Syntax</span>
+                        <h3 class="level-title">Level 3.9 – Update Arrays for Each Person</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 3, Question 9</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Updating array values using PostgreSQL's array literal syntax '{1,2,3}' to set entire arrays at once.
                 </div>
 
                 <div class="question-box">
@@ -1448,8 +2127,15 @@ WHERE name = 'Bob Johnson';</pre>
             <!-- Level 3.10 -->
             <div class="level-card" data-level="16">
                 <div class="level-header">
-                    <h3 class="level-title">Level 3.10 – Query Arrays: Contains 1 AND 5</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">@> Array Contains Operator</span>
+                        <h3 class="level-title">Level 3.10 – Query Arrays: Contains 1 AND 5</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 3, Question 10</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Using the @> (contains) operator to check if an array contains all specified elements regardless of order.
                 </div>
 
                 <div class="question-box">
@@ -1503,8 +2189,15 @@ WHERE interests @> '{1,5}';</pre>
             <!-- Level 3.11 -->
             <div class="level-card" data-level="17">
                 <div class="level-header">
-                    <h3 class="level-title">Level 3.11 – Query Arrays: Contains 2 NOT 4</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">Complex Array Queries with NOT</span>
+                        <h3 class="level-title">Level 3.11 – Query Arrays: Contains 2 NOT 4</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 3, Question 11</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Combining @> operator with NOT to filter arrays based on both inclusion and exclusion criteria.
                 </div>
 
                 <div class="question-box">
@@ -1559,8 +2252,15 @@ WHERE interests @> '{2}'
             <!-- Level 3.12 -->
             <div class="level-card" data-level="18">
                 <div class="level-header">
-                    <h3 class="level-title">Level 3.12 – Append to Array</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">array_append Function</span>
+                        <h3 class="level-title">Level 3.12 – Append to Array</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 3, Question 12</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Using the array_append function to add a single element to the end of an existing array without replacing the entire array.
                 </div>
 
                 <div class="question-box">
@@ -1632,11 +2332,51 @@ WHERE id = 1;</pre>
                 </ul>
             </div>
 
+            <!-- Interactive Lab: Backup & Restore Flow -->
+            <div class="interactive-lab">
+                <h3>🎮 Interactive Lab: Backup & Restore Workflow</h3>
+                <p>Visualize the backup and restore process! See how data flows through different backup formats.</p>
+
+                <div style="margin: 20px 0;">
+                    <button class="lab-button" onclick="simulatePgDump()">🔵 Run pg_dump (SQL)</button>
+                    <button class="lab-button" onclick="simulatePgDumpDirectory()">📂 Run pg_dump (Directory)</button>
+                    <button class="lab-button" onclick="simulatePsqlRestore()">⬆️ Restore with psql</button>
+                    <button class="lab-button" onclick="simulatePgRestore()">⬆️ Restore with pg_restore</button>
+                    <button class="lab-button" onclick="resetBackupFlow()">🔄 Reset Flow</button>
+                </div>
+
+                <div class="backup-flow" id="backupFlow">
+                    <div class="flow-step">
+                        <div class="flow-node">📊 Original Database</div>
+                        <div class="flow-description">Your PostgreSQL database with all tables and data</div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-step" id="backupStep">
+                        <div class="flow-node inactive">💾 Backup File</div>
+                        <div class="flow-description">Backup not created yet</div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-step" id="restoreStep">
+                        <div class="flow-node inactive">🔄 Restored Database</div>
+                        <div class="flow-description">Database not restored yet</div>
+                    </div>
+                </div>
+
+                <div class="lab-output" id="labOutput4"></div>
+            </div>
+
             <!-- Level 4.1 -->
             <div class="level-card" data-level="19">
                 <div class="level-header">
-                    <h3 class="level-title">Level 4.1 – Backup Database to SQL File</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">pg_dump to SQL File</span>
+                        <h3 class="level-title">Level 4.1 – Backup Database to SQL File</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 4, Question 1</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Using pg_dump utility to create a plain-text SQL backup file that can be executed to recreate the database.
                 </div>
 
                 <div class="question-box">
@@ -1695,8 +2435,15 @@ pg_dump mydb > mydb_backup.sql</pre>
             <!-- Level 4.2 -->
             <div class="level-card" data-level="20">
                 <div class="level-header">
-                    <h3 class="level-title">Level 4.2 – Restore from SQL File</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">psql Restore from SQL</span>
+                        <h3 class="level-title">Level 4.2 – Restore from SQL File</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 4, Question 2</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Using psql to execute a SQL backup file and restore the database structure and data.
                 </div>
 
                 <div class="question-box">
@@ -1751,8 +2498,15 @@ psql mydb < mydb_backup.sql</pre>
             <!-- Level 4.3 -->
             <div class="level-card" data-level="21">
                 <div class="level-header">
-                    <h3 class="level-title">Level 4.3 – Restore from Directory Format</h3>
+                    <div class="level-title-group">
+                        <span class="concept-tag">pg_restore from Directory Format</span>
+                        <h3 class="level-title">Level 4.3 – Restore from Directory Format</h3>
+                    </div>
                     <span class="level-tag">Midterm – Section 4, Question 3</span>
+                </div>
+
+                <div class="what-this-tests">
+                    <strong>💡 What this tests:</strong> Using pg_restore to restore from directory-format backups, which support parallel restore and selective restoration.
                 </div>
 
                 <div class="question-box">
@@ -1802,6 +2556,121 @@ pg_restore -d mydb -v mydb_backup_dir</pre>
                 </div>
 
                 <button class="master-button" onclick="markMastered(this, 21)">✅ Mark this level as mastered</button>
+            </div>
+        </div>
+
+        <!-- CHEAT SHEETS SECTION -->
+        <div class="cheat-sheets-section" id="cheatsheets">
+            <h2 style="text-align: center; color: white; margin-bottom: 40px;">📚 Quick Reference Cheat Sheets</h2>
+
+            <div class="cheat-cards">
+                <!-- Cheat Sheet 1: Connections -->
+                <div class="cheat-card">
+                    <h3>🌐 Connection Management</h3>
+                    <div class="cheat-content">
+                        <h4>View Connections:</h4>
+                        <pre>SELECT pid, usename, datname, state
+FROM pg_stat_activity;</pre>
+
+                        <h4>Cancel Query (Gentle):</h4>
+                        <pre>SELECT pg_cancel_backend(PID);</pre>
+
+                        <h4>Terminate Connection (Force):</h4>
+                        <pre>SELECT pg_terminate_backend(PID);</pre>
+
+                        <h4>Kill All for Role:</h4>
+                        <pre>SELECT pg_terminate_backend(pid)
+FROM pg_stat_activity
+WHERE usename = 'role_name'
+  AND pid &lt;&gt; pg_backend_pid();</pre>
+                    </div>
+                </div>
+
+                <!-- Cheat Sheet 2: Roles & Permissions -->
+                <div class="cheat-card">
+                    <h3>👥 Roles & Permissions</h3>
+                    <div class="cheat-content">
+                        <h4>Create User with Login:</h4>
+                        <pre>CREATE ROLE username LOGIN
+PASSWORD 'password'
+VALID UNTIL '2025-12-31';</pre>
+
+                        <h4>Grant Permissions:</h4>
+                        <pre>GRANT SELECT, INSERT, UPDATE
+ON table_name TO username;</pre>
+
+                        <h4>Create Group Role:</h4>
+                        <pre>CREATE ROLE groupname;</pre>
+
+                        <h4>Add User to Group:</h4>
+                        <pre>GRANT groupname TO username;</pre>
+
+                        <h4>Test as User:</h4>
+                        <pre>SET ROLE username;
+-- Test queries here
+RESET ROLE;</pre>
+                    </div>
+                </div>
+
+                <!-- Cheat Sheet 3: Data Types & Arrays -->
+                <div class="cheat-card">
+                    <h3>🔬 Data Types & Arrays</h3>
+                    <div class="cheat-content">
+                        <h4>Common Data Types:</h4>
+                        <pre>SERIAL          -- Auto-increment integer
+VARCHAR(n)      -- Variable-length string
+NUMERIC(p,s)    -- Decimal with precision
+TEXT            -- Unlimited text
+DATE            -- Calendar date
+TIMESTAMPTZ     -- Timestamp with timezone
+INTEGER[]       -- Array of integers</pre>
+
+                        <h4>String Functions:</h4>
+                        <pre>LPAD(column, 20, ' ')  -- Left pad
+TRIM(column)            -- Remove whitespace</pre>
+
+                        <h4>Array Operations:</h4>
+                        <pre>-- Set array
+UPDATE t SET arr = '{1,2,3}' WHERE id=1;
+
+-- Check contains
+SELECT * FROM t WHERE arr @> '{1,5}';
+
+-- Append to array
+UPDATE t SET arr = array_append(arr, 6);</pre>
+
+                        <h4>Sequences:</h4>
+                        <pre>CREATE SEQUENCE seq_name
+START WITH 100 INCREMENT BY 10;</pre>
+                    </div>
+                </div>
+
+                <!-- Cheat Sheet 4: Backup & Restore -->
+                <div class="cheat-card">
+                    <h3>💾 Backup & Restore</h3>
+                    <div class="cheat-content">
+                        <h4>Backup to SQL File:</h4>
+                        <pre>pg_dump -d dbname -f backup.sql
+-- OR --
+pg_dump dbname > backup.sql</pre>
+
+                        <h4>Restore from SQL File:</h4>
+                        <pre>psql -d dbname -f backup.sql
+-- OR --
+psql dbname < backup.sql</pre>
+
+                        <h4>Backup to Directory Format:</h4>
+                        <pre>pg_dump -d dbname -F d -f backup_dir</pre>
+
+                        <h4>Restore from Directory:</h4>
+                        <pre>pg_restore -d dbname backup_dir</pre>
+
+                        <h4>Import CSV Data:</h4>
+                        <pre>COPY table_name (col1, col2, col3)
+FROM '/path/to/file.csv'
+WITH (FORMAT csv, HEADER true);</pre>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -2117,9 +2986,348 @@ pg_restore -d mydb -v mydb_backup_dir</pre>
             }
         }
 
+        // ===== INTERACTIVE SIMULATORS =====
+
+        // World 1: Connection Simulator
+        let connections = [
+            { pid: 12345, usename: 'admin', datname: 'mydb', state: 'active', query: 'SELECT * FROM users' },
+            { pid: 12346, usename: 'dev_user', datname: 'mydb', state: 'idle', query: '' },
+            { pid: 12347, usename: 'analyst', datname: 'analytics', state: 'active', query: 'SELECT COUNT(*) FROM events' }
+        ];
+
+        function renderConnections() {
+            const tbody = document.getElementById('connectionTableBody');
+            tbody.innerHTML = connections.map(conn => `
+                <tr>
+                    <td>${conn.pid}</td>
+                    <td>${conn.usename}</td>
+                    <td>${conn.datname}</td>
+                    <td><span style="color: ${conn.state === 'active' ? '#10b981' : '#64748b'}">${conn.state}</span></td>
+                    <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">${conn.query || 'N/A'}</td>
+                    <td>
+                        <button class="lab-button" style="padding: 5px 10px; font-size: 0.8rem;" onclick="cancelQuery(${conn.pid})">Cancel</button>
+                        <button class="lab-button" style="padding: 5px 10px; font-size: 0.8rem;" onclick="terminateConnection(${conn.pid})">Terminate</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function runQuerySim() {
+            const newPid = 12340 + Math.floor(Math.random() * 100);
+            connections.push({
+                pid: newPid,
+                usename: 'test_user',
+                datname: 'testdb',
+                state: 'active',
+                query: 'SELECT pg_sleep(300)'
+            });
+            renderConnections();
+            showLabOutput('labOutput1', `✅ Started long-running query with PID ${newPid}`, 'success');
+        }
+
+        function cancelQuery(pid) {
+            const conn = connections.find(c => c.pid === pid);
+            if (conn) {
+                conn.state = 'idle';
+                conn.query = '';
+                renderConnections();
+                showLabOutput('labOutput1', `✅ Cancelled query for PID ${pid} using pg_cancel_backend()`, 'success');
+            }
+        }
+
+        function terminateConnection(pid) {
+            connections = connections.filter(c => c.pid !== pid);
+            renderConnections();
+            showLabOutput('labOutput1', `❌ Terminated connection PID ${pid} using pg_terminate_backend()`, 'warning');
+        }
+
+        function terminateAllByRole() {
+            const role = document.getElementById('roleTerminateInput').value.trim();
+            if (!role) {
+                showLabOutput('labOutput1', '⚠️ Please enter a role name', 'error');
+                return;
+            }
+            const count = connections.filter(c => c.usename === role).length;
+            connections = connections.filter(c => c.usename !== role);
+            renderConnections();
+            showLabOutput('labOutput1', `❌ Terminated ${count} connection(s) for role "${role}"`, 'warning');
+        }
+
+        function refreshConnections() {
+            renderConnections();
+            showLabOutput('labOutput1', '🔄 Refreshed connection list from pg_stat_activity', 'info');
+        }
+
+        // World 2: Roles Diagram
+        let rolesState = { users: [], roles: [], grants: [] };
+
+        function applyLevel2_1() {
+            rolesState.users.push({ name: 'dev_user', validUntil: '2025-12-31', permissions: ['SELECT on employee_data', 'INSERT on employee_data', 'UPDATE on employee_data'] });
+            updateRolesDiagram();
+            showLabOutput('labOutput2', '✅ Created dev_user with LOGIN, password, VALID UNTIL 2025-12-31<br>✅ Granted SELECT, INSERT, UPDATE on employee_data', 'success');
+        }
+
+        function applyLevel2_2() {
+            if (!rolesState.users.find(u => u.name === 'dev_user')) {
+                showLabOutput('labOutput2', '⚠️ Please apply Level 2.1 first to create dev_user', 'warning');
+                return;
+            }
+            rolesState.roles.push({ name: 'dev_team', members: ['dev_user'], permissions: ['SELECT on all tables', 'INSERT on all tables', 'UPDATE on all tables'] });
+            updateRolesDiagram();
+            showLabOutput('labOutput2', '✅ Created dev_team role<br>✅ Granted dev_user membership in dev_team<br>✅ Granted ALL table permissions to dev_team', 'success');
+        }
+
+        function applyLevel2_3() {
+            if (!rolesState.roles.find(r => r.name === 'dev_team')) {
+                showLabOutput('labOutput2', '⚠️ Please apply Level 2.2 first to create dev_team', 'warning');
+                return;
+            }
+            rolesState.users.push({ name: 'new_developer', validUntil: '2026-12-31', memberOf: 'dev_team' });
+            rolesState.roles.find(r => r.name === 'dev_team').members.push('new_developer');
+            updateRolesDiagram();
+            showLabOutput('labOutput2', '✅ Created new_developer user<br>✅ Added new_developer to dev_team role<br>✅ Tested SELECT access on employee_data (inherited from dev_team)', 'success');
+        }
+
+        function updateRolesDiagram() {
+            const usersContainer = document.getElementById('usersContainer');
+            const rolesContainer = document.getElementById('rolesContainer');
+
+            rolesContainer.innerHTML = rolesState.roles.map(role => `
+                <div class="role-node" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); margin: 20px 0;">
+                    <strong>Role: ${role.name}</strong>
+                    <div class="role-permissions" style="font-size: 0.85rem; margin-top: 5px;">
+                        ${role.permissions.join('<br>')}
+                    </div>
+                    <div style="font-size: 0.8rem; margin-top: 5px; opacity: 0.9;">
+                        Members: ${role.members.join(', ')}
+                    </div>
+                </div>
+            `).join('');
+
+            usersContainer.innerHTML = rolesState.users.map(user => `
+                <div class="role-node" style="background: linear-gradient(135deg, #10b981, #059669); margin: 10px 0;">
+                    <strong>User: ${user.name}</strong>
+                    ${user.validUntil ? `<div style="font-size: 0.8rem; opacity: 0.9;">Valid until: ${user.validUntil}</div>` : ''}
+                    ${user.memberOf ? `<div style="font-size: 0.8rem; opacity: 0.9;">Member of: ${user.memberOf}</div>` : ''}
+                    ${user.permissions ? `<div class="role-permissions" style="font-size: 0.85rem; margin-top: 5px;">${user.permissions.join('<br>')}</div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function resetRolesDiagram() {
+            rolesState = { users: [], roles: [], grants: [] };
+            updateRolesDiagram();
+            showLabOutput('labOutput2', '🔄 Reset roles diagram to initial state', 'info');
+        }
+
+        // World 3: Sample Table Playground
+        let sampleTable = null;
+        let sampleColumns = ['id', 'name', 'age', 'description'];
+
+        function createSampleTable() {
+            sampleTable = [
+                { id: 1, name: 'John Smith', age: 25.00, description: 'Lorem ipsum dolor sit amet' },
+                { id: 2, name: 'Jane Doe', age: 33.00, description: 'Nullam imperdiet massa' },
+                { id: 3, name: 'Bob Johnson', age: 45.00, description: 'Pellentesque euismod quam' }
+            ];
+            renderSampleTable();
+            showLabOutput('labOutput3', '✅ Created sample_table with columns: id (SERIAL), name (VARCHAR(50)), age (NUMERIC(4,2)), description (TEXT)', 'success');
+        }
+
+        function renderSampleTable() {
+            const thead = document.getElementById('sampleTableHeader');
+            const tbody = document.getElementById('sampleTableBody');
+
+            if (!sampleTable) {
+                tbody.innerHTML = '<tr><td colspan="20" style="text-align: center; color: #64748b;">Table not created yet. Click "Create Table" to start!</td></tr>';
+                return;
+            }
+
+            thead.innerHTML = '<tr>' + sampleColumns.map(col => `<th>${col}</th>`).join('') + '</tr>';
+            tbody.innerHTML = sampleTable.map(row =>
+                '<tr>' + sampleColumns.map(col => `<td>${row[col] !== undefined ? row[col] : ''}</td>`).join('') + '</tr>'
+            ).join('');
+        }
+
+        function loadSampleCSV() {
+            if (!sampleTable) { showLabOutput('labOutput3', '⚠️ Create table first', 'warning'); return; }
+            showLabOutput('labOutput3', '✅ Loaded data from CSV using COPY command with HEADER true', 'success');
+        }
+
+        function applyLPAD() {
+            if (!sampleTable) { showLabOutput('labOutput3', '⚠️ Create table first', 'warning'); return; }
+            sampleTable = sampleTable.map(row => ({ ...row, name: row.name.padStart(20, ' ') }));
+            renderSampleTable();
+            showLabOutput('labOutput3', '✅ Applied LPAD(name, 20, \' \') to pad names to 20 characters', 'success');
+        }
+
+        function applyTRIM() {
+            if (!sampleTable) { showLabOutput('labOutput3', '⚠️ Create table first', 'warning'); return; }
+            showLabOutput('labOutput3', '✅ Applied TRIM to remove whitespace from description column', 'success');
+        }
+
+        function addDateColumn() {
+            if (!sampleTable) { showLabOutput('labOutput3', '⚠️ Create table first', 'warning'); return; }
+            if (!sampleColumns.includes('birthdate')) {
+                sampleColumns.push('birthdate');
+                sampleTable = sampleTable.map(row => ({ ...row, birthdate: '1990-01-01' }));
+                renderSampleTable();
+                showLabOutput('labOutput3', '✅ Added birthdate column with type DATE', 'success');
+            }
+        }
+
+        function addTimestampColumn() {
+            if (!sampleTable) { showLabOutput('labOutput3', '⚠️ Create table first', 'warning'); return; }
+            if (!sampleColumns.includes('last_login')) {
+                sampleColumns.push('last_login');
+                sampleTable = sampleTable.map(row => ({ ...row, last_login: '2025-01-01 10:00:00+00' }));
+                renderSampleTable();
+                showLabOutput('labOutput3', '✅ Added last_login column with type TIMESTAMPTZ', 'success');
+            }
+        }
+
+        function showSequenceWidget() {
+            document.getElementById('sequenceWidget').style.display = 'block';
+        }
+
+        function createSequence() {
+            const start = document.getElementById('seqStart').value;
+            const inc = document.getElementById('seqIncrement').value;
+            showLabOutput('labOutput3', `✅ Created sequence starting at ${start}, incrementing by ${inc}`, 'success');
+            document.getElementById('sequenceWidget').style.display = 'none';
+        }
+
+        function addArrayColumn() {
+            if (!sampleTable) { showLabOutput('labOutput3', '⚠️ Create table first', 'warning'); return; }
+            if (!sampleColumns.includes('interests')) {
+                sampleColumns.push('interests');
+                sampleTable[0].interests = '{1,3,5}';
+                sampleTable[1].interests = '{2,4}';
+                sampleTable[2].interests = '{1,2,3,4,5}';
+                renderSampleTable();
+                showLabOutput('labOutput3', '✅ Added interests column with type INTEGER[]<br>✅ Updated arrays for each person', 'success');
+            }
+        }
+
+        function queryArrays() {
+            if (!sampleTable || !sampleColumns.includes('interests')) {
+                showLabOutput('labOutput3', '⚠️ Add array column first', 'warning');
+                return;
+            }
+            showLabOutput('labOutput3', '✅ Query: WHERE interests @> \'{1,5}\'<br>Result: 1 row (John Smith with {1,3,5})', 'info');
+        }
+
+        function appendToArray() {
+            if (!sampleTable || !sampleColumns.includes('interests')) {
+                showLabOutput('labOutput3', '⚠️ Add array column first', 'warning');
+                return;
+            }
+            sampleTable[0].interests += ',7';
+            renderSampleTable();
+            showLabOutput('labOutput3', '✅ Used array_append to add 7 to id=1\'s interests', 'success');
+        }
+
+        function resetSampleTable() {
+            sampleTable = null;
+            sampleColumns = ['id', 'name', 'age', 'description'];
+            renderSampleTable();
+            document.getElementById('sequenceWidget').style.display = 'none';
+            showLabOutput('labOutput3', '🔄 Reset table to initial state', 'info');
+        }
+
+        // World 4: Backup/Restore Flow
+        let backupState = { backup: null, restored: false };
+
+        function simulatePgDump() {
+            backupState.backup = { type: 'sql', file: 'mydb_backup.sql' };
+            document.querySelector('#backupStep .flow-node').classList.remove('inactive');
+            document.querySelector('#backupStep .flow-description').textContent = 'SQL file: mydb_backup.sql (plain text format)';
+            showLabOutput('labOutput4', '✅ pg_dump -d mydb -f mydb_backup.sql<br>Created plain SQL backup file', 'success');
+        }
+
+        function simulatePgDumpDirectory() {
+            backupState.backup = { type: 'directory', file: 'mydb_backup_dir' };
+            document.querySelector('#backupStep .flow-node').classList.remove('inactive');
+            document.querySelector('#backupStep .flow-description').textContent = 'Directory: mydb_backup_dir (supports parallel restore)';
+            showLabOutput('labOutput4', '✅ pg_dump -d mydb -F d -f mydb_backup_dir<br>Created directory format backup', 'success');
+        }
+
+        function simulatePsqlRestore() {
+            if (!backupState.backup || backupState.backup.type !== 'sql') {
+                showLabOutput('labOutput4', '⚠️ Create SQL backup first using pg_dump', 'warning');
+                return;
+            }
+            backupState.restored = true;
+            document.querySelector('#restoreStep .flow-node').classList.remove('inactive');
+            document.querySelector('#restoreStep .flow-description').textContent = 'Database restored from SQL file';
+            showLabOutput('labOutput4', '✅ psql -d mydb -f mydb_backup.sql<br>Successfully restored database from SQL file', 'success');
+        }
+
+        function simulatePgRestore() {
+            if (!backupState.backup || backupState.backup.type !== 'directory') {
+                showLabOutput('labOutput4', '⚠️ Create directory backup first using pg_dump -F d', 'warning');
+                return;
+            }
+            backupState.restored = true;
+            document.querySelector('#restoreStep .flow-node').classList.remove('inactive');
+            document.querySelector('#restoreStep .flow-description').textContent = 'Database restored from directory format';
+            showLabOutput('labOutput4', '✅ pg_restore -d mydb mydb_backup_dir<br>Successfully restored database from directory', 'success');
+        }
+
+        function resetBackupFlow() {
+            backupState = { backup: null, restored: false };
+            document.querySelector('#backupStep .flow-node').classList.add('inactive');
+            document.querySelector('#backupStep .flow-description').textContent = 'Backup not created yet';
+            document.querySelector('#restoreStep .flow-node').classList.add('inactive');
+            document.querySelector('#restoreStep .flow-description').textContent = 'Database not restored yet';
+            showLabOutput('labOutput4', '🔄 Reset backup/restore flow to initial state', 'info');
+        }
+
+        // Helper function for lab outputs
+        function showLabOutput(id, message, type = 'info') {
+            const output = document.getElementById(id);
+            const colors = {
+                success: '#10b981',
+                warning: '#f59e0b',
+                error: '#ef4444',
+                info: '#3b82f6'
+            };
+            output.innerHTML = `<div style="color: ${colors[type]}; margin-top: 15px;">${message}</div>`;
+        }
+
+        // Enhanced Progress with Stars
+        function updateProgressDisplay() {
+            const totalLevels = 21;
+            const masteredCount = Object.keys(masteredLevels).filter(key => masteredLevels[key]).length;
+            const percentage = Math.round((masteredCount / totalLevels) * 100);
+
+            document.getElementById('progressPercentage').textContent = `${percentage}%`;
+            document.getElementById('starsDisplay').textContent = `⭐ ${masteredCount} / ${totalLevels} Stars`;
+
+            // Show success banner if all completed
+            if (masteredCount === totalLevels) {
+                document.getElementById('successBanner').style.display = 'block';
+            } else {
+                document.getElementById('successBanner').style.display = 'none';
+            }
+        }
+
+        // Override the original markMastered to include stars
+        const originalMarkMastered = markMastered;
+        markMastered = function(button, levelNumber) {
+            const alreadyMastered = masteredLevels[levelNumber];
+            originalMarkMastered.call(this, button, levelNumber);
+            updateProgressDisplay();
+            if (!alreadyMastered && masteredLevels[levelNumber]) {
+                createConfetti(button.getBoundingClientRect().left + button.offsetWidth / 2, button.getBoundingClientRect().top);
+            }
+        };
+
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
             loadProgress();
+            updateProgressDisplay();
+            renderConnections();
         });
     </script>
 </body>
